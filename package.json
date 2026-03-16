@@ -1,6 +1,6 @@
 {
   "name": "@easysolutions906/mcp-cusip-isin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CUSIP and ISIN security identifier validator - validate, parse, and batch-check financial instrument codes",
   "type": "module",
   "main": "src/index.js",
