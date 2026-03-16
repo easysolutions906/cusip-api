@@ -2,8 +2,8 @@ import Stripe from 'stripe';
 import { createKey, revokeKey, loadKeys } from './keys.js';
 
 const PRICE_TO_PLAN = {
-  'price_1TBdpR2dvwjzjXFJeRVsm4pF': 'starter',
-  'price_1TBdpR2dvwjzjXFJL8IXefSv': 'pro',
+  'price_1TBhuJBAfS5cSTakmCZre3To': 'starter',
+  'price_1TBhuJBAfS5cSTakkbeODEKk': 'pro',
 };
 
 const PLAN_TO_PRICE = Object.fromEntries(
