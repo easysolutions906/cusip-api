@@ -1,32 +1,67 @@
-# CUSIP/ISIN Validator API + MCP Server
+# MCP CUSIP/ISIN Server
 
-Validate and parse CUSIP and ISIN security identifiers. Pure algorithm — no external data needed.
+A [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server for validating and parsing CUSIP and ISIN security identifiers using check digit algorithms.
 
-## Endpoints
+## Tools (4 total)
 
-- `GET /` — API info
-- `GET /health` — health check
-- `GET /cusip/validate?cusip=037833100` — validate a CUSIP
-- `GET /isin/validate?isin=US0378331005` — validate an ISIN
-- `GET /cusip/parse?cusip=037833100` — parse CUSIP into components
-- `GET /isin/parse?isin=US0378331005` — parse ISIN into components
-- `POST /validate/batch` — batch validate multiple CUSIPs/ISINs
+| Tool | Description |
+|------|-------------|
+| `cusip_validate` | Validate a 9-character CUSIP using the Luhn-variant check digit algorithm |
+| `cusip_parse` | Parse a CUSIP into issuer code, issue number, and check digit |
+| `isin_validate` | Validate a 12-character ISIN using the Luhn algorithm |
+| `isin_parse` | Parse an ISIN into country code, NSIN, and check digit (extracts embedded CUSIP for US/CA) |
 
-## MCP Transport
-
-- **Stdio**: run without `PORT` env var
-- **Streamable HTTP**: set `PORT` env var, connect to `/mcp`
-
-## Local Development
+## Install
 
 ```bash
-npm install
-npm run dev
+npx @easysolutions906/mcp-cusip-isin
 ```
 
-## Deploy
+### Claude Desktop
 
-```bash
-# Railway
-railway up
+Add to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "cusip-isin": {
+      "command": "npx",
+      "args": ["-y", "@easysolutions906/mcp-cusip-isin"]
+    }
+  }
+}
 ```
+
+### Cursor
+
+Add to `.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "cusip-isin": {
+      "command": "npx",
+      "args": ["-y", "@easysolutions906/mcp-cusip-isin"]
+    }
+  }
+}
+```
+
+## REST API
+
+Set `PORT` env var to run as an HTTP server.
+
+- `GET /cusip/validate?cusip=037833100` -- validate a CUSIP
+- `GET /cusip/parse?cusip=037833100` -- parse CUSIP into components
+- `GET /isin/validate?isin=US0378331005` -- validate an ISIN
+- `GET /isin/parse?isin=US0378331005` -- parse ISIN into components
+- `POST /validate/batch` -- batch validate multiple CUSIPs and ISINs
+
+## Data Source
+
+Pure algorithm -- no external dataset required. CUSIP uses a Luhn-variant checksum; ISIN uses standard Luhn over letter-to-number conversion.
+
+## Transport
+
+- **stdio** (default) -- for local use with Claude Desktop and Cursor
+- **HTTP** -- set `PORT` env var to start in Streamable HTTP mode on `/mcp`
